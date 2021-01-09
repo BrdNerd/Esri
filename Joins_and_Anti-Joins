@@ -1,0 +1,18 @@
+# Join subset to csv
+subset = list_csv[list_csv['ref_ID'] == 224]
+sjr = pd.merge(subset, ref_csv, left_on="ref_ID", right_on="ref_ID", how="inner")
+sjr.to_csv(r'PATH/filename.csv')
+sjr_path=('PATH/filename.csv')
+print(type(sjr_path))
+pd.read_csv(sjr_path)
+#
+#
+# Defining the Anti-join in Pandas:
+def anti_join(x, y, left_on, right_on):
+    """Return rows in x which are not present in y"""
+    ans = pd.merge(left=x, right=y, how='left', indicator=True, left_on=left_on, right_on=right_on)
+    ans = ans.loc[ans._merge == 'left_only', :].drop(columns='_merge')
+    return ans
+#
+# To run:
+anti1 = anti_join(csv1, csv2, left_on="column", right_on="column")
